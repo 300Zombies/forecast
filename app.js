@@ -47,7 +47,7 @@ window.addEventListener("load", function () {
                         // TODO: new syntax & C/F use css after
                         if (temperatureSpan.textContent === "F") {
                             temperatureSpan.textContent = "C";
-                            temperatureDegree.textContent = celsius;
+                            temperatureDegree.textContent = parseInt(celsius * 10) / 10;
                         } else {
                             temperatureSpan.textContent = "F";
                             temperatureDegree.textContent = temperature;
