@@ -33,11 +33,11 @@ window.addEventListener("load", function () {
 
                     // set DOM elements form API
                     // TODO: show celsius by default
-                    temperatureDegree.textContent = temperature;
+                    //  F to C
+                    let celsius = (temperature - 32) * (5 / 9); // Fahrenheit to Celsius
+                    temperatureDegree.textContent = parseInt(celsius * 10) / 10; //temperature
                     temperatureDescription.textContent = summary;
                     locationTimezone.textContent = data.timezone;
-                    //  F to C
-                    let celsius = (temperature - 32) * (5 / 9);
 
                     // set icon
                     setIcons(icon, document.querySelector("#icon"));
@@ -45,12 +45,12 @@ window.addEventListener("load", function () {
                     // change C/F
                     degreeSection.addEventListener("click", function () {
                         // TODO: new syntax & C/F use css after
-                        if (temperatureSpan.textContent === "F") {
+                        if (temperatureSpan.textContent === "C") {
+                            temperatureSpan.textContent = "F";
+                            temperatureDegree.textContent = parseInt(temperature * 10) / 10;
+                        } else {
                             temperatureSpan.textContent = "C";
                             temperatureDegree.textContent = parseInt(celsius * 10) / 10;
-                        } else {
-                            temperatureSpan.textContent = "F";
-                            temperatureDegree.textContent = temperature;
                         }
                     });
                 });
