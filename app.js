@@ -5,7 +5,7 @@ window.addEventListener("load", function () {
     let temperatureDescription = document.querySelector("#temperature-description");
     let temperatureDegree = document.querySelector("#temperature-degree");
     let locationTimezone = document.querySelector("#location-timezone");
-    let degreeSection = document.querySelector("#temperature");
+    let degreeSection = document.querySelector("#degree-section");
     const temperatureSpan = document.querySelector("#temperature span")
     const key = "c939533bf0d26e4e3692b962868c76b6";
 
@@ -23,7 +23,6 @@ window.addEventListener("load", function () {
                     return response.json();
                 })
                 .then(function (data) {
-
                     // console.log(data);
                     const {
                         temperature,
@@ -32,7 +31,7 @@ window.addEventListener("load", function () {
                     } = data.currently;
 
                     // set DOM elements form API
-                    // TODO: show celsius by default
+                    // show celsius by default
                     //  F to C
                     let celsius = (temperature - 32) * (5 / 9); // Fahrenheit to Celsius
                     temperatureDegree.textContent = parseInt(celsius * 10) / 10; //temperature
@@ -44,7 +43,7 @@ window.addEventListener("load", function () {
 
                     // change C/F
                     degreeSection.addEventListener("click", function () {
-                        // TODO: new syntax & C/F use css after
+                        // TODO: change syntax & relocate C/F to element:after
                         if (temperatureSpan.textContent === "C") {
                             temperatureSpan.textContent = "F";
                             temperatureDegree.textContent = parseInt(temperature * 10) / 10;
@@ -53,8 +52,13 @@ window.addEventListener("load", function () {
                             temperatureDegree.textContent = parseInt(celsius * 10) / 10;
                         }
                     });
+                })
+                .catch(function (error) {
+                    console.log(`Something went wrong because ${error}`);
                 });
         });
+    } else {
+        console.log("Please allow Google geolocation");
     }
 
     function setIcons(icon, iconId) {
