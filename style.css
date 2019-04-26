@@ -8,6 +8,23 @@ body {
     height: 100vh;
     display: flex;
     justify-content: center;
+    /* flex-direction: column;
+    align-items: center;
+    background: linear-gradient(rgb(47, 150, 163), rgb(45, 62, 143));
+    font-family: sans-serif;
+    color: white; */
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+.forecast-container {
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
     flex-direction: column;
     align-items: center;
     background: linear-gradient(rgb(47, 150, 163), rgb(45, 62, 143));
@@ -22,6 +39,8 @@ body {
     display: flex;
     justify-content: space-around;
     align-items: center;
+    opacity: 0;
+    transition: 2s ease-in;
 }
 
 #temperature {
