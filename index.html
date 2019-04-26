@@ -10,20 +10,23 @@
 </head>
 
 <body>
-    <div id="location">
-        <h1 id="location-timezone"></h1>
-        <canvas id="icon" width="128" height="128"></canvas>
-    </div>
-    <div id="temperature">
-        <div id="degree-section">
-            <h2 id="temperature-degree"></h2>
-            <!-- TODO: display span after fetch done -->
-            <span>C</span>
+    <div class="forecast-container">
+        <div id="location">
+            <h1 id="location-timezone"></h1>
+            <canvas id="icon" width="128" height="128"></canvas>
         </div>
-        <div id="temperature-description"></div>
+        <div id="temperature">
+            <div id="degree-section">
+                <h2 id="temperature-degree"></h2>
+                <span style="font-size: 36px"></span>
+            </div>
+            <div id="temperature-description"></div>
+            <a target="_blank" href="https://darksky.net/poweredby/">Powered by Dark Sky</a>
+        </div>
     </div>
     <script src="./skycons.js"></script>
     <script src="./app.js"></script>
+
 </body>
 
 </html>
