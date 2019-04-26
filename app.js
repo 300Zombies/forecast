@@ -1,16 +1,19 @@
-window.addEventListener("load", function () {
+window.addEventListener("load", () => {
     let long;
     let lat;
     // set variables
-    let temperatureDescription = document.querySelector("#temperature-description");
-    let temperatureDegree = document.querySelector("#temperature-degree");
-    let locationTimezone = document.querySelector("#location-timezone");
-    let degreeSection = document.querySelector("#degree-section");
+    const temperatureDescription = document.querySelector("#temperature-description");
+    const temperatureDegree = document.querySelector("#temperature-degree");
+    const locationTimezone = document.querySelector("#location-timezone");
+    const degreeSection = document.querySelector("#degree-section");
     const temperatureSpan = document.querySelector("#temperature span")
+    const location = document.querySelector("#location");
+    const temperature = document.querySelector("#temperature");
     const key = "c939533bf0d26e4e3692b962868c76b6";
+    // Auth key for develope only do not abuse please
 
     if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(function (position) {
+        navigator.geolocation.getCurrentPosition((position) => {
             // console.log(position);
             long = position.coords.longitude;
             lat = position.coords.latitude;
@@ -19,46 +22,52 @@ window.addEventListener("load", function () {
             const api = `${proxy}https://api.darksky.net/forecast/${key}/${lat},${long}`;
 
             fetch(api)
-                .then(function (response) {
+                .then((response) => {
+                    if (response.status === 429) {
+                        return
+                    }
                     return response.json();
                 })
-                .then(function (data) {
+                .then((data) => {
                     // console.log(data);
                     const {
                         temperature,
                         summary,
-                        icon
+                        icon,
                     } = data.currently;
+                    const {
+                        timezone
+                    } = data;
 
                     // set DOM elements form API
                     // show celsius by default
                     //  F to C
-                    let celsius = (temperature - 32) * (5 / 9); // Fahrenheit to Celsius
-                    temperatureDegree.textContent = parseInt(celsius * 10) / 10; //temperature
-                    temperatureDescription.textContent = summary;
-                    locationTimezone.textContent = data.timezone;
+                    showDescription(summary, timezone);
+                    showCelsius(temperature);
 
                     // set icon
                     setIcons(icon, document.querySelector("#icon"));
 
                     // change C/F
-                    degreeSection.addEventListener("click", function () {
-                        // TODO: change syntax & relocate C/F to element:after
-                        if (temperatureSpan.textContent === "C") {
-                            temperatureSpan.textContent = "F";
-                            temperatureDegree.textContent = parseInt(temperature * 10) / 10;
+                    degreeSection.addEventListener("click", () => {
+                        if (temperatureSpan.textContent === "°C") {
+                            showFahrenheit(temperature);
                         } else {
-                            temperatureSpan.textContent = "C";
-                            temperatureDegree.textContent = parseInt(celsius * 10) / 10;
+                            showCelsius(temperature);
                         }
                     });
                 })
-                .catch(function (error) {
-                    console.log(`Something went wrong because ${error}`);
+                .then(() => {
+                    location.style.opacity = "1";
+                    temperature.style.opacity = "1";
+                })
+                .catch((error) => {
+                    console.log(error);
+                    alert(`Heroku proxy restriction: Too Many Requests`);
                 });
         });
     } else {
-        console.log("Please allow Google geolocation");
+        alert("Please allow Google geolocation");
     }
 
     function setIcons(icon, iconId) {
@@ -69,5 +78,21 @@ window.addEventListener("load", function () {
         const currentIcon = icon.replace(/-/g, "_").toUpperCase();
         skycons.play();
         return skycons.set(iconId, Skycons[currentIcon]);
+    }
+
+    function showDescription(summary, timezone) {
+        temperatureDescription.textContent = summary;
+        locationTimezone.textContent = timezone;
+    }
+
+    function showCelsius(temperature) {
+        let celsius = (temperature - 32) * (5 / 9);
+        temperatureDegree.textContent = `${parseInt(celsius * 10) / 10}`;
+        temperatureSpan.innerHTML = "&deg;C";
+    }
+
+    function showFahrenheit(temperature) {
+        temperatureDegree.textContent = temperature;
+        temperatureSpan.innerHTML = "&deg;F";
     }
 });
