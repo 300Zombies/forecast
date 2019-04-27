@@ -9,6 +9,7 @@ window.addEventListener("load", () => {
     const temperatureSpan = document.querySelector("#temperature span")
     const location = document.querySelector("#location");
     const temperature = document.querySelector("#temperature");
+    const loading = document.querySelector(".loading");
     const key = "c939533bf0d26e4e3692b962868c76b6";
     // Auth key for develope only do not abuse please
 
@@ -58,6 +59,7 @@ window.addEventListener("load", () => {
                     });
                 })
                 .then(() => {
+                    loading.style.opacity = "0";
                     location.style.opacity = "1";
                     temperature.style.opacity = "1";
                 })
